@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fallakte Psyche</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .screen {
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .start-screen {
+      background: linear-gradient(135deg, #020617, #111827, #312e81);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .grid-start {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 28px;
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(10px);
+      color: #fff;
+    }
+
+    .card-content {
+      padding: 36px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #020617;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .badge-light {
+      background: #fff;
+      color: #020617;
+    }
+
+    .badge-soft {
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .badge-indigo {
+      background: #818cf8;
+      color: #020617;
+    }
+
+    .top-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .icon-box {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 72px);
+      line-height: 0.95;
+      margin: 0 0 18px;
+      letter-spacing: -0.05em;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 30px;
+      letter-spacing: -0.03em;
+    }
+
+    h3 {
+      margin: 0 0 12px;
+      font-size: 22px;
+    }
+
+    p {
+      line-height: 1.6;
+    }
+
+    .lead {
+      font-size: 21px;
+      color: #dbeafe;
+      margin-bottom: 32px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .feature {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .feature-icon {
+      font-size: 26px;
+      margin-bottom: 8px;
+    }
+
+    .feature-title {
+      font-weight: 800;
+      margin: 0 0 4px;
+    }
+
+    .feature-text {
+      color: #cbd5e1;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .button {
+      border: 0;
+      border-radius: 18px;
+      padding: 13px 22px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      background: #020617;
+      color: #fff;
+      transition: transform 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+      background: #1e293b;
+    }
+
+    .button:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+      transform: none;
+    }
+
+    .button-light {
+      background: #fff;
+      color: #020617;
+      font-size: 18px;
+      padding: 17px 30px;
+    }
+
+    .button-light:hover {
+      background: #e2e8f0;
+    }
+
+    .button-outline {
+      background: #fff;
+      color: #020617;
+      border: 1px solid #cbd5e1;
+    }
+
+    .mission-list {
+      display: grid;
+      gap: 14px;
+      color: #475569;
+    }
+
+    .mission-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .number {
+      color: #4f46e5;
+      font-weight: 900;
+    }
+
+    .info-box {
+      margin-top: 32px;
+      background: #f1f5f9;
+      padding: 20px;
+      border-radius: 18px;
+    }
+
+    .game-header {
+      margin-bottom: 24px;
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow {
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 6px;
+    }
+
+    .case-title {
+      font-size: clamp(30px, 5vw, 44px);
+      margin: 0;
+      letter-spacing: -0.04em;
+    }
+
+    .score-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .progress {
+      width: 100%;
+      height: 12px;
+      background: #cbd5e1;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: #020617;
+      transition: width 0.4s ease;
+    }
+
+    .case-band {
+      padding: 34px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .case-band-slate {
+      background: #f1f5f9;
+    }
+
+    .case-band-amber {
+      background: #fffbeb;
+    }
+
+    .case-band-rose {
+      background: #fff1f2;
+    }
+
+    .case-band-indigo {
+      background: #eef2ff;
+    }
+
+    .case-layout {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .case-icon {
+      flex: 0 0 auto;
+      width: 74px;
+      height: 74px;
+      background: #fff;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+    }
+
+    .case-text {
+      font-size: 18px;
+      color: #334155;
+      margin: 0;
+    }
+
+    .card-footer {
+      padding: 28px 34px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .hint-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 28px 0;
+    }
+
+    .hint-card,
+    .answer-card {
+      width: 100%;
+      text-align: left;
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      border-radius: 20px;
+      padding: 20px;
+      cursor: pointer;
+      transition: background 0.15s ease, border 0.15s ease, transform 0.15s ease;
+      color: #0f172a;
+    }
+
+    .hint-card:hover,
+    .answer-card:hover {
+      background: #f8fafc;
+      transform: translateY(-1px);
+    }
+
+    .hint-card.selected {
+      background: #020617;
+      color: #fff;
+      border-color: #020617;
+    }
+
+    .hint-title-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .hint-title {
+      font-weight: 900;
+      margin: 0;
+    }
+
+    .hint-detail {
+      margin: 0;
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .hint-card.selected .hint-detail {
+      color: #cbd5e1;
+    }
+
+    .question-band {
+      padding: 34px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .question-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .question-text {
+      font-size: clamp(24px, 4vw, 34px);
+      line-height: 1.15;
+      margin: 0;
+      letter-spacing: -0.04em;
+    }
+
+    .answer-list {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .answer-card.correct {
+      background: #ecfdf5;
+      border-color: #34d399;
+    }
+
+    .answer-card.wrong {
+      background: #fef2f2;
+      border-color: #f87171;
+    }
+
+    .letter {
+      font-weight: 900;
+      margin-right: 8px;
+    }
+
+    .feedback {
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 24px;
+      border: 1px solid;
+    }
+
+    .feedback.good {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+    }
+
+    .feedback.bad {
+      background: #fff7ed;
+      border-color: #fed7aa;
+    }
+
+    .feedback-title {
+      font-weight: 900;
+      margin: 0 0 4px;
+    }
+
+    .feedback-text {
+      margin: 0;
+      color: #334155;
+    }
+
+    .right-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .result-hero {
+      background: #020617;
+      color: #fff;
+      padding: 40px;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .result-box {
+      background: #f1f5f9;
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .result-label {
+      color: #64748b;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .result-value {
+      font-size: 34px;
+      font-weight: 950;
+      margin: 4px 0 0;
+    }
+
+    .log-list {
+      max-height: 300px;
+      overflow: auto;
+      display: grid;
+      gap: 12px;
+      padding-right: 4px;
+    }
+
+    .log-item {
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      border-radius: 18px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .log-title {
+      font-weight: 900;
+      margin: 0 0 4px;
+    }
+
+    .log-text {
+      color: #64748b;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    @media (max-width: 850px) {
+      .grid-start,
+      .feature-grid,
+      .hint-grid,
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header-row,
+      .case-layout {
+        align-items: flex-start;
+      }
+
+      .header-row {
+        flex-direction: column;
+      }
+
+      .case-layout {
+        flex-direction: column;
+      }
+
+      .card-content,
+      .case-band,
+      .question-band,
+      .result-hero {
+        padding: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main id="app"></main>
+
+  <script>
+    (function () {
+      const cases = [
+        {
+          title: "Fallakte 1: Frau M.",
+          diagnosis: "Depression mit möglicher Suizidalität",
+          icon: "🫀",
+          band: "case-band-slate",
+          patient: "Frau M., 32 Jahre",
+          situation: "Du betrittst das Zimmer von Frau M. Sie liegt im Bett, schaut zur Wand und reagiert erst nach mehrmaligem Ansprechen. Das Frühstück steht unberührt auf dem Nachttisch. Leise sagt sie: „Ich bin allen nur noch eine Belastung. Eigentlich wäre es besser, wenn ich nicht mehr da wäre.“",
+          hintIntro: "Welche Hinweise möchtest du genauer prüfen? Wähle zwei aus.",
+          hints: [
+            {
+              text: "Gesprächsausschnitt",
+              detail: "Frau M. berichtet, sie könne seit Tagen kaum schlafen und fühle sich wertlos.",
+              good: true
+            },
+            {
+              text: "Pflegedokumentation",
+              detail: "Seit drei Tagen sozialer Rückzug, wenig Nahrungsaufnahme, kaum Eigeninitiative.",
+              good: true
+            },
+            {
+              text: "Kleiderwahl",
+              detail: "Frau M. trägt einen grauen Pullover. Das sagt alleine wenig über die Situation aus.",
+              good: false
+            },
+            {
+              text: "Wetterbericht",
+              detail: "Es regnet draussen. Für die Einschätzung der akuten Situation ist das nicht zentral.",
+              good: false
+            }
+          ],
+          questions: [
+            {
+              area: "Sicherheit",
+              question: "Was ist deine wichtigste erste Reaktion?",
+              options: [
+                "Ich sage: „So dürfen Sie nicht denken. Es wird schon wieder.“",
+                "Ich lasse sie besser schlafen, weil Ruhe jetzt wichtiger ist.",
+                "Ich nehme die Aussage ernst und frage ruhig nach Suizidgedanken.",
+                "Ich hole zuerst etwas zu essen, damit sie wieder Kraft bekommt."
+              ],
+              correct: 2,
+              feedbackCorrect: "Richtig. Die Aussage kann ein Hinweis auf Suizidalität sein. Direktes, ruhiges Nachfragen ist wichtig und erhöht das Risiko nicht.",
+              feedbackWrong: "Nicht optimal. Bei Aussagen wie „besser, wenn ich nicht mehr da wäre“ muss Suizidalität ernst genommen und direkt angesprochen werden."
+            },
+            {
+              area: "Fachwissen",
+              question: "Welche Symptomkombination passt am ehesten zu einer Depression?",
+              options: [
+                "Gesteigerter Antrieb, Rededrang und Größenideen",
+                "Antriebslosigkeit, Hoffnungslosigkeit und sozialer Rückzug",
+                "Stimmenhören, Verfolgungswahn und Ich-Störungen",
+                "Plötzliche Euphorie, enthemmtes Verhalten und kaum Schlafbedürfnis"
+              ],
+              correct: 1,
+              feedbackCorrect: "Genau. Rückzug, Antriebslosigkeit, Interessenverlust, Wertlosigkeit und Hoffnungslosigkeit sind typische Hinweise.",
+              feedbackWrong: "Schau auf die Leitsymptome: Frau M. wirkt zurückgezogen, hoffnungslos, antriebslos und äussert mögliche suizidale Gedanken."
+            }
+          ]
+        },
+        {
+          title: "Fallakte 2: Herr K.",
+          diagnosis: "Manische Episode / Bipolare Störung",
+          icon: "🧠",
+          band: "case-band-amber",
+          patient: "Herr K., 44 Jahre",
+          situation: "Herr K. läuft seit dem Morgen ununterbrochen über den Flur. Er spricht sehr schnell, unterbricht andere Patientinnen und Patienten und sagt: „Ich brauche keinen Schlaf mehr. Ich habe endlich verstanden, wie ich reich werde. Heute gründe ich drei Firmen.“",
+          hintIntro: "Welche Hinweise möchtest du genauer prüfen? Wähle zwei aus.",
+          hints: [
+            {
+              text: "Schlafprotokoll",
+              detail: "Herr K. hat in den letzten zwei Nächten jeweils nur etwa zwei Stunden geschlafen.",
+              good: true
+            },
+            {
+              text: "Beobachtung im Aufenthaltsraum",
+              detail: "Er spricht laut, wechselt ständig das Thema und ist kaum zu unterbrechen.",
+              good: true
+            },
+            {
+              text: "Lieblingsfarbe",
+              detail: "Herr K. mag Rot. Das hilft fachlich kaum weiter.",
+              good: false
+            },
+            {
+              text: "Essenswunsch",
+              detail: "Er möchte lieber Pasta als Reis. Für die aktuelle Einschätzung nicht zentral.",
+              good: false
+            }
+          ],
+          questions: [
+            {
+              area: "Fachwissen",
+              question: "Welche Beobachtung passt besonders zu einer manischen Episode?",
+              options: [
+                "Verlangsamtes Denken und starke Schuldgefühle",
+                "Gesteigerter Antrieb, Rededrang und Größenideen",
+                "Stimmenhören und Verfolgungswahn",
+                "Ausgeprägte Angst vor Keimen und Waschzwang"
+              ],
+              correct: 1,
+              feedbackCorrect: "Richtig. Gesteigerter Antrieb, vermindertes Schlafbedürfnis, Rededrang und Größenideen passen gut zu einer Manie.",
+              feedbackWrong: "Nicht ganz. Herr K. zeigt eher gesteigerten Antrieb, Rededrang, vermindertes Schlafbedürfnis und Größenideen."
+            },
+            {
+              area: "Beziehungsgestaltung",
+              question: "Welche pflegerische Reaktion ist am passendsten?",
+              options: [
+                "Ich diskutiere ausführlich mit ihm, warum seine Geschäftsideen unrealistisch sind.",
+                "Ich biete eine reizarme Umgebung an und setze klare, ruhige Grenzen.",
+                "Ich lache mit, damit er sich verstanden fühlt.",
+                "Ich fordere ihn streng auf, sofort still zu sein."
+              ],
+              correct: 1,
+              feedbackCorrect: "Sehr gut. Bei manischer Symptomatik helfen Reizreduktion, Struktur, klare Grenzen und ruhige Kommunikation.",
+              feedbackWrong: "Eher schwierig. Diskussionen, Auslachen oder harte Konfrontation können die Situation verschärfen. Struktur und Reizabschirmung sind hilfreicher."
+            }
+          ]
+        },
+        {
+          title: "Fallakte 3: Frau S.",
+          diagnosis: "Borderline-Persönlichkeitsstörung",
+          icon: "💬",
+          band: "case-band-rose",
+          patient: "Frau S., 26 Jahre",
+          situation: "Frau S. wirkt angespannt und läuft vor dem Stationszimmer auf und ab. Sie sagt: „Sie sind die Einzige, die mich hier versteht. Wenn Sie jetzt auch keine Zeit haben, kann ich mir gleich wieder weh tun.“ Kurz danach beschimpft sie eine andere Pflegeperson lautstark.",
+          hintIntro: "Welche Hinweise möchtest du genauer prüfen? Wähle zwei aus.",
+          hints: [
+            {
+              text: "Beziehungsgestaltung im Verlauf",
+              detail: "Frau S. idealisiert einzelne Bezugspersonen stark und wertet andere rasch ab.",
+              good: true
+            },
+            {
+              text: "Anspannungsniveau",
+              detail: "Sie beschreibt inneren Druck und den Drang, sich zu verletzen.",
+              good: true
+            },
+            {
+              text: "Zimmernummer",
+              detail: "Sie liegt in Zimmer 12. Das ist für die fachliche Einschätzung nicht relevant.",
+              good: false
+            },
+            {
+              text: "Lieblingsserie",
+              detail: "Sie schaut gerne Krimis. Für die aktuelle Situation ist das nicht entscheidend.",
+              good: false
+            }
+          ],
+          questions: [
+            {
+              area: "Fachwissen",
+              question: "Welche Merkmale passen besonders zur Borderline-Persönlichkeitsstörung?",
+              options: [
+                "Emotionale Instabilität, Nähe-Distanz-Probleme und Selbstverletzungsdruck",
+                "Hohes Fieber, Verwirrtheit und Desorientierung",
+                "Langsame Bewegungen, Maskengesicht und Tremor",
+                "Chronischer Husten, Dyspnoe und Auswurf"
+              ],
+              correct: 0,
+              feedbackCorrect: "Richtig. Emotionale Instabilität, starke Anspannung, Selbstverletzungsdruck und wechselhafte Beziehungsgestaltung sind wichtige Hinweise.",
+              feedbackWrong: "Nicht passend. Achte auf die starke Anspannung, Selbstverletzungsankündigung und das rasche Wechseln zwischen Idealisierung und Abwertung."
+            },
+            {
+              area: "Beziehungsgestaltung",
+              question: "Wie reagierst du professionell?",
+              options: [
+                "Ich verspreche ihr, dass ich ab jetzt immer sofort für sie da bin.",
+                "Ich sage: „Wenn Sie drohen, rede ich gar nicht mehr mit Ihnen.“",
+                "Ich bleibe ruhig, nehme die Anspannung ernst und biete klare nächste Schritte an.",
+                "Ich gebe ihr recht, dass die andere Pflegeperson schlecht gearbeitet hat."
+              ],
+              correct: 2,
+              feedbackCorrect: "Gut. Validierung, klare Grenzen und konkrete Skills oder nächste Schritte helfen mehr als Versprechen oder Abwertung anderer.",
+              feedbackWrong: "Achtung. Übermässige Versprechen, Gegenangriff oder Partei-Ergreifen verstärken häufig die Dynamik. Ruhig, klar und wertschätzend bleiben."
+            }
+          ]
+        },
+        {
+          title: "Fallakte 4: Herr B.",
+          diagnosis: "Schizophrenie / psychotische Symptome",
+          icon: "⚠️",
+          band: "case-band-indigo",
+          patient: "Herr B., 39 Jahre",
+          situation: "Herr B. sitzt angespannt im Aufenthaltsraum und schaut immer wieder zur Decke. Er flüstert: „Die Kameras hören alles mit. Die Stimmen sagen, dass ich niemandem trauen darf.“ Als du ihn ansprichst, wirkt er misstrauisch und zieht sich zurück.",
+          hintIntro: "Welche Hinweise möchtest du genauer prüfen? Wähle zwei aus.",
+          hints: [
+            {
+              text: "Wahrnehmungserleben",
+              detail: "Herr B. berichtet, Stimmen zu hören, die andere nicht hören.",
+              good: true
+            },
+            {
+              text: "Gedankeninhalt",
+              detail: "Er ist überzeugt, überwacht zu werden, obwohl dafür keine Hinweise bestehen.",
+              good: true
+            },
+            {
+              text: "Schuhgrösse",
+              detail: "Seine Schuhgrösse ist für diese Einschätzung nicht relevant.",
+              good: false
+            },
+            {
+              text: "Frühstücksauswahl",
+              detail: "Er hatte Müesli. Das hilft bei der psychischen Einschätzung kaum weiter.",
+              good: false
+            }
+          ],
+          questions: [
+            {
+              area: "Fachwissen",
+              question: "Welche Symptome stehen hier im Vordergrund?",
+              options: [
+                "Wahn und akustische Halluzinationen",
+                "Zwangsgedanken und Zwangshandlungen",
+                "Euphorie und Grössenideen",
+                "Somatische Schmerzen ohne psychischen Bezug"
+              ],
+              correct: 0,
+              feedbackCorrect: "Richtig. Stimmenhören spricht für akustische Halluzinationen, die Überzeugung überwacht zu werden für Wahn.",
+              feedbackWrong: "Nicht optimal. Die Kameras und Stimmen sind zentrale Hinweise auf Wahn und Halluzinationen."
+            },
+            {
+              area: "Kommunikation",
+              question: "Welche Kommunikation ist am passendsten?",
+              options: [
+                "Ich sage: „Das ist Unsinn, hier gibt es keine Kameras.“",
+                "Ich bestätige: „Ja, die Kameras sind wirklich gefährlich.“",
+                "Ich sage ruhig: „Ich sehe keine Kameras, aber ich merke, dass Sie Angst haben.“",
+                "Ich ignoriere seine Aussage vollständig."
+              ],
+              correct: 2,
+              feedbackCorrect: "Sehr gut. Nicht in den Wahn einsteigen, aber die Gefühle ernst nehmen: Das ist professionell und deeskalierend.",
+              feedbackWrong: "Schwierig. Wahninhalte sollten weder bestätigt noch hart abgewertet werden. Besser ist: eigene Wahrnehmung klar benennen und Emotionen ernst nehmen."
+            }
+          ]
+        }
+      ];
+
+      const state = {
+        started: false,
+        finished: false,
+        caseIndex: 0,
+        phase: "case",
+        selectedHints: [],
+        questionIndex: 0,
+        selectedAnswer: null,
+        feedback: null,
+        score: 0,
+        maxScore: 0,
+        log: []
+      };
+
+      const app = document.getElementById("app");
+
+      function escapeHtml(text) {
+        return String(text)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function getRank(percent) {
+        if (percent >= 90) {
+          return {
+            title: "Stationsprofi",
+            text: "Stark! Du erkennst Symptome, Risiken und passende Interventionen sehr sicher."
+          };
+        }
+        if (percent >= 70) {
+          return {
+            title: "Sicher unterwegs",
+            text: "Gute Leistung. Kleine Unsicherheiten sind noch da, aber deine Einschätzungen sind meist stimmig."
+          };
+        }
+        if (percent >= 50) {
+          return {
+            title: "Noch im Lernmodus",
+            text: "Du hast wichtige Hinweise erkannt. Wiederhole besonders die Abgrenzung der Krankheitsbilder."
+          };
+        }
+        return {
+          title: "Dienstübergabe nötig",
+          text: "Da ist noch Luft nach oben. Geh die Fallakten nochmals durch und achte auf Leitsymptome und Sicherheit."
+        };
+      }
+
+      function totalQuestions() {
+        return cases.reduce(function (sum, item) {
+          return sum + item.questions.length;
+        }, 0);
+      }
+
+      function answeredQuestions() {
+        return state.log.filter(function (item) {
+          return item.kind === "question";
+        }).length;
+      }
+
+      function getProgress() {
+        let phasePart;
+
+        if (state.finished) {
+          return 100;
+        }
+
+        if (state.phase === "case") {
+          phasePart = 0.1;
+        } else if (state.phase === "hints") {
+          phasePart = 0.35;
+        } else {
+          phasePart = 0.65;
+        }
+
+        return Math.round(((state.caseIndex + phasePart) / cases.length) * 100);
+      }
+
+      function resetGame() {
+        state.started = false;
+        state.finished = false;
+        state.caseIndex = 0;
+        state.phase = "case";
+        state.selectedHints = [];
+        state.questionIndex = 0;
+        state.selectedAnswer = null;
+        state.feedback = null;
+        state.score = 0;
+        state.maxScore = 0;
+        state.log = [];
+        render();
+      }
+
+      function startGame() {
+        state.started = true;
+        render();
+      }
+
+      function nextStep() {
+        const currentCase = cases[state.caseIndex];
+
+        if (state.phase === "case") {
+          state.phase = "hints";
+          render();
+          return;
+        }
+
+        if (state.phase !== "questions" || !state.feedback) {
+          return;
+        }
+
+        if (state.questionIndex < currentCase.questions.length - 1) {
+          state.questionIndex += 1;
+          state.selectedAnswer = null;
+          state.feedback = null;
+        } else if (state.caseIndex < cases.length - 1) {
+          state.caseIndex += 1;
+          state.phase = "case";
+          state.selectedHints = [];
+          state.questionIndex = 0;
+          state.selectedAnswer = null;
+          state.feedback = null;
+        } else {
+          state.finished = true;
+        }
+
+        render();
+      }
+
+      function toggleHint(index) {
+        const existing = state.selectedHints.indexOf(index);
+
+        if (existing >= 0) {
+          state.selectedHints.splice(existing, 1);
+        } else if (state.selectedHints.length < 2) {
+          state.selectedHints.push(index);
+        }
+
+        render();
+      }
+
+      function evaluateHints() {
+        const currentCase = cases[state.caseIndex];
+        const points = state.selectedHints.reduce(function (sum, index) {
+          return sum + (currentCase.hints[index].good ? 1 : 0);
+        }, 0);
+
+        state.score += points;
+        state.maxScore += 2;
+        state.log.push({
+          kind: "hints",
+          caseTitle: currentCase.title,
+          points: points,
+          max: 2
+        });
+        state.phase = "questions";
+        render();
+      }
+
+      function answerQuestion(index) {
+        let isCorrect;
+        let currentCase;
+        let currentQuestion;
+
+        if (state.feedback) {
+          return;
+        }
+
+        currentCase = cases[state.caseIndex];
+        currentQuestion = currentCase.questions[state.questionIndex];
+        isCorrect = index === currentQuestion.correct;
+
+        state.selectedAnswer = index;
+        state.feedback = {
+          correct: isCorrect,
+          text: isCorrect ? currentQuestion.feedbackCorrect : currentQuestion.feedbackWrong
+        };
+        state.score += isCorrect ? 2 : 0;
+        state.maxScore += 2;
+        state.log.push({
+          kind: "question",
+          caseTitle: currentCase.title,
+          question: currentQuestion.question,
+          area: currentQuestion.area,
+          correct: isCorrect,
+          points: isCorrect ? 2 : 0,
+          max: 2
+        });
+        render();
+      }
+
+      function renderStart() {
+        app.innerHTML =
+          '<section class="screen start-screen">' +
+            '<div class="container">' +
+              '<div class="grid-start">' +
+                '<div class="card glass-card">' +
+                  '<div class="card-content">' +
+                    '<div class="top-row">' +
+                      '<div class="icon-box">🩺</div>' +
+                      '<span class="badge badge-indigo">Singleplayer Lernspiel</span>' +
+                    '</div>' +
+                    '<h1>Fallakte Psyche</h1>' +
+                    '<p class="lead">Du bist im Frühdienst auf Station 4B. Sammle Hinweise, erkenne psychiatrische Symptome und entscheide professionell.</p>' +
+                    '<div class="feature-grid">' +
+                      '<div class="feature">' +
+                        '<div class="feature-icon">🧠</div>' +
+                        '<p class="feature-title">Fachwissen</p>' +
+                        '<p class="feature-text">Krankheitsbilder erkennen</p>' +
+                      '</div>' +
+                      '<div class="feature">' +
+                        '<div class="feature-icon">💬</div>' +
+                        '<p class="feature-title">Kommunikation</p>' +
+                        '<p class="feature-text">Professionell reagieren</p>' +
+                      '</div>' +
+                      '<div class="feature">' +
+                        '<div class="feature-icon">⚠️</div>' +
+                        '<p class="feature-title">Sicherheit</p>' +
+                        '<p class="feature-text">Risiken einschätzen</p>' +
+                      '</div>' +
+                    '</div>' +
+                    '<button class="button button-light" data-action="start-game">Dienst beginnen</button>' +
+                  '</div>' +
+                '</div>' +
+                '<div class="card">' +
+                  '<div class="card-content">' +
+                    '<h2>Deine Mission</h2>' +
+                    '<div class="mission-list">' +
+                      '<p>In jeder Fallakte entscheidest du:</p>' +
+                      '<div class="mission-item"><span class="number">1</span><span>Welche Hinweise sind fachlich relevant?</span></div>' +
+                      '<div class="mission-item"><span class="number">2</span><span>Welche Symptome erkennst du?</span></div>' +
+                      '<div class="mission-item"><span class="number">3</span><span>Welche Handlung passt zur FaGe-Rolle?</span></div>' +
+                      '<div class="mission-item"><span class="number">4</span><span>Wie sicher ist dein Vorgehen?</span></div>' +
+                    '</div>' +
+                    '<div class="info-box">' +
+                      '<strong>Enthaltene Krankheitsbilder</strong>' +
+                      '<p>Depression, Borderline-Persönlichkeitsstörung, bipolare Störung / Manie und Schizophrenie.</p>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</section>';
+      }
+
+      function renderHeader(currentCase) {
+        return (
+          '<header class="game-header">' +
+            '<div class="header-row">' +
+              '<div>' +
+                '<p class="eyebrow">Fallakte Psyche · Station 4B</p>' +
+                '<h1 class="case-title">' + escapeHtml(currentCase.title) + '</h1>' +
+              '</div>' +
+              '<div class="score-row">' +
+                '<span class="badge">Punkte: ' + state.score + '/' + state.maxScore + '</span>' +
+                '<button class="button button-outline" data-action="reset-game">Reset</button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="progress"><div class="progress-fill" style="width: ' + getProgress() + '%;"></div></div>' +
+          '</header>'
+        );
+      }
+
+      function renderCase() {
+        const currentCase = cases[state.caseIndex];
+
+        app.innerHTML =
+          '<section class="screen">' +
+            '<div class="container">' +
+              renderHeader(currentCase) +
+              '<div class="card">' +
+                '<div class="case-band ' + currentCase.band + '">' +
+                  '<div class="case-layout">' +
+                    '<div class="case-icon">' + currentCase.icon + '</div>' +
+                    '<div>' +
+                      '<span class="badge badge-soft">' + escapeHtml(currentCase.patient) + '</span>' +
+                      '<h2 style="margin-top: 16px;">Situation</h2>' +
+                      '<p class="case-text">' + escapeHtml(currentCase.situation) + '</p>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>' +
+                '<div class="card-footer">' +
+                  '<p>Lies die Situation genau. Danach sammelst du zwei Hinweise.</p>' +
+                  '<button class="button" data-action="next-step">Hinweise sammeln</button>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</section>';
+      }
+
+      function renderHints() {
+        const currentCase = cases[state.caseIndex];
+        const hintCards = currentCase.hints.map(function (hint, index) {
+          const selected = state.selectedHints.indexOf(index) !== -1;
+
+          return (
+            '<button class="hint-card ' + (selected ? 'selected' : '') + '" data-action="toggle-hint" data-index="' + index + '">' +
+              '<div class="hint-title-row">' +
+                '<p class="hint-title">' + escapeHtml(hint.text) + '</p>' +
+                (selected ? '<span class="badge badge-light">gewählt</span>' : '') +
+              '</div>' +
+              '<p class="hint-detail">' + escapeHtml(hint.detail) + '</p>' +
+            '</button>'
+          );
+        }).join("");
+
+        app.innerHTML =
+          '<section class="screen">' +
+            '<div class="container">' +
+              renderHeader(currentCase) +
+              '<div class="card">' +
+                '<div class="card-content">' +
+                  '<h2>📋 Hinweise sammeln</h2>' +
+                  '<p>' + escapeHtml(currentCase.hintIntro) + '</p>' +
+                  '<div class="hint-grid">' + hintCards + '</div>' +
+                  '<div class="card-footer" style="padding: 0; box-shadow: none;">' +
+                    '<p>Gewählt: ' + state.selectedHints.length + '/2</p>' +
+                    '<button class="button" data-action="evaluate-hints" ' + (state.selectedHints.length !== 2 ? 'disabled' : '') + '>Auswahl auswerten</button>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</section>';
+      }
+
+      function renderQuestions() {
+        const currentCase = cases[state.caseIndex];
+        const currentQuestion = currentCase.questions[state.questionIndex];
+        const answerCards = currentQuestion.options.map(function (option, index) {
+          const isSelected = state.selectedAnswer === index;
+          const isCorrect = currentQuestion.correct === index;
+          let answerClass = "";
+
+          if (state.feedback && isCorrect) {
+            answerClass = "correct";
+          }
+          if (state.feedback && isSelected && !isCorrect) {
+            answerClass = "wrong";
+          }
+
+          return (
+            '<button class="answer-card ' + answerClass + '" data-action="answer-question" data-index="' + index + '">' +
+              '<span class="letter">' + String.fromCharCode(65 + index) + '.</span>' +
+              '<span>' + escapeHtml(option) + '</span>' +
+            '</button>'
+          );
+        }).join("");
+
+        const feedbackHtml = state.feedback
+          ? (
+            '<div class="feedback ' + (state.feedback.correct ? 'good' : 'bad') + '">' +
+              '<p class="feedback-title">' + (state.feedback.correct ? 'Richtig entschieden' : 'Nochmals fachlich hinschauen') + '</p>' +
+              '<p class="feedback-text">' + escapeHtml(state.feedback.text) + '</p>' +
+            '</div>'
+          )
+          : "";
+
+        const isLastQuestion = state.caseIndex === cases.length - 1 && state.questionIndex === currentCase.questions.length - 1;
+        const nextButtonLabel = isLastQuestion ? "Zur Auswertung" : "Weiter";
+
+        app.innerHTML =
+          '<section class="screen">' +
+            '<div class="container">' +
+              renderHeader(currentCase) +
+              '<div class="card">' +
+                '<div class="question-band">' +
+                  '<div class="question-top">' +
+                    '<span class="badge">' + escapeHtml(currentQuestion.area) + '</span>' +
+                    '<p>Frage ' + (state.questionIndex + 1) + '/' + currentCase.questions.length + '</p>' +
+                  '</div>' +
+                  '<p class="question-text">' + escapeHtml(currentQuestion.question) + '</p>' +
+                '</div>' +
+                '<div class="card-content">' +
+                  '<div class="answer-list">' + answerCards + '</div>' +
+                  feedbackHtml +
+                  '<div class="right-actions">' +
+                    '<button class="button" data-action="next-step" ' + (!state.feedback ? 'disabled' : '') + '>' + nextButtonLabel + '</button>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</section>';
+      }
+
+      function renderResult() {
+        const percent = state.maxScore > 0 ? Math.round((state.score / state.maxScore) * 100) : 0;
+        const rank = getRank(percent);
+        const logHtml = state.log.map(function (item) {
+          const text = item.kind === "hints"
+            ? "Hinweisauswahl"
+            : escapeHtml(item.area) + ": " + escapeHtml(item.question);
+
+          return (
+            '<div class="log-item">' +
+              '<div>' +
+                '<p class="log-title">' + escapeHtml(item.caseTitle) + '</p>' +
+                '<p class="log-text">' + text + '</p>' +
+              '</div>' +
+              '<span class="badge ' + (item.points === item.max ? '' : 'badge-soft') + '">' + item.points + '/' + item.max + '</span>' +
+            '</div>'
+          );
+        }).join("");
+
+        app.innerHTML =
+          '<section class="screen">' +
+            '<div class="container">' +
+              '<div class="card">' +
+                '<div class="result-hero">' +
+                  '<div class="top-row">' +
+                    '<div style="font-size: 44px;">🏆</div>' +
+                    '<span class="badge badge-light">Auswertung</span>' +
+                  '</div>' +
+                  '<h1>' + escapeHtml(rank.title) + '</h1>' +
+                  '<p class="lead">' + escapeHtml(rank.text) + '</p>' +
+                '</div>' +
+                '<div class="card-content">' +
+                  '<div class="result-grid">' +
+                    '<div class="result-box">' +
+                      '<p class="result-label">Punkte</p>' +
+                      '<p class="result-value">' + state.score + '/' + state.maxScore + '</p>' +
+                    '</div>' +
+                    '<div class="result-box">' +
+                      '<p class="result-label">Quote</p>' +
+                      '<p class="result-value">' + percent + '%</p>' +
+                    '</div>' +
+                    '<div class="result-box">' +
+                      '<p class="result-label">Fragen</p>' +
+                      '<p class="result-value">' + answeredQuestions() + '/' + totalQuestions() + '</p>' +
+                    '</div>' +
+                  '</div>' +
+                  '<h2>Dienstübergabe</h2>' +
+                  '<div class="log-list">' + logHtml + '</div>' +
+                  '<div style="margin-top: 32px;">' +
+                    '<button class="button" data-action="reset-game">Nochmals spielen</button>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</section>';
+      }
+
+      function render() {
+        if (!state.started) {
+          renderStart();
+          return;
+        }
+
+        if (state.finished) {
+          renderResult();
+          return;
+        }
+
+        if (state.phase === "case") {
+          renderCase();
+          return;
+        }
+
+        if (state.phase === "hints") {
+          renderHints();
+          return;
+        }
+
+        renderQuestions();
+      }
+
+      document.addEventListener("click", function (event) {
+        const actionElement = event.target.closest("[data-action]");
+        let index;
+
+        if (!actionElement) {
+          return;
+        }
+
+        if (actionElement.disabled) {
+          return;
+        }
+
+        switch (actionElement.getAttribute("data-action")) {
+          case "start-game":
+            startGame();
+            break;
+          case "reset-game":
+            resetGame();
+            break;
+          case "next-step":
+            nextStep();
+            break;
+          case "evaluate-hints":
+            evaluateHints();
+            break;
+          case "toggle-hint":
+            index = Number(actionElement.getAttribute("data-index"));
+            toggleHint(index);
+            break;
+          case "answer-question":
+            index = Number(actionElement.getAttribute("data-index"));
+            answerQuestion(index);
+            break;
+          default:
+            break;
+        }
+      });
+
+      render();
+    }());
+  </script>
+</body>
+</html>
